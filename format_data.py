@@ -23,7 +23,7 @@ def get_matching_file_names(root: str):
 
 
 def get_mask(path, shape=None):
-    img = Image.open(path)
+    img = Image.open(path).convert('L')
     if shape:
         img = img.resize(shape, Image.BILINEAR)
 
@@ -31,7 +31,7 @@ def get_mask(path, shape=None):
 
 
 def get_raw_image(path, shape=None):
-    img = Image.open(path)
+    img = Image.open(path).convert('RGB')
     if shape:
         img = img.resize(shape, Image.BILINEAR)
 
@@ -58,6 +58,7 @@ if __name__ == '__main__':
     print('Getting data...')
     train_labels, train_images = get_data_set(train_dir, image_shape)
     print(train_images.shape, train_labels.shape)
+    assert train_images.shape[0] == train_labels.shape[0]
 
     print('Generating training & validation sets...')
     N = int(train_labels.shape[0] * validation_split)
